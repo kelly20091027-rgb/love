@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="UTF-8">
+<title>Love Heart Demo</title>
+<style>
+html,body{margin:0;background:#000;overflow:hidden;height:100%}
+canvas{display:block}
+</style></head>
+<body><canvas id=c></canvas>
+<script>
+const cv=document.getElementById('c'),ctx=cv.getContext('2d');
+function rs(){cv.width=innerWidth;cv.height=innerHeight}rs();onresize=rs;
+let t=0;
+function heart(a){
+ const x=16*Math.pow(Math.sin(a),3);
+ const y=13*Math.cos(a)-5*Math.cos(2*a)-2*Math.cos(3*a)-Math.cos(4*a);
+ return [x,y];
+}
+function draw(){
+ t+=0.02;
+ ctx.fillStyle="#000";ctx.fillRect(0,0,cv.width,cv.height);
+ ctx.save();ctx.translate(cv.width/2,cv.height/2);ctx.scale(18,-18);
+ ctx.font="0.8px sans-serif";
+ ctx.fillStyle="#ea80b0";
+ ctx.shadowColor="#ffd1e6";ctx.shadowBlur=0.6;
+ for(let i=0;i<220;i++){
+   let a=i/220*Math.PI*2+t;
+   let p=heart(a);
+   let dx=heart(a+0.03);
+   let ang=Math.atan2(dx[1]-p[1],dx[0]-p[0]);
+   ctx.save();
+   ctx.translate(p[0],p[1]);
+   ctx.rotate(-ang);
+   ctx.fillText("I love you",0,0);
+   ctx.restore();
+ }
+ ctx.restore();
+ requestAnimationFrame(draw);
+}
+draw();
+</script></body></html>
